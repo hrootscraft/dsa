@@ -13,17 +13,19 @@ Dynamic sizing can be done on LL; no need to specify it's size initially.
 <br>
 Arrays Vs. LL
 
-1. A-Indexed, Contiguous 
-2. L-No indices, not contiguous
+| Property      | Array (A)                      | Linked List (L)                                        |
+| ------------- | ------------------------------ | ------------------------------------------------------ |
+| Indexing      | Direct/random access via index | No direct indices (must traverse)                      |
+| Memory layout | Contiguous block in memory     | Nodes stored non-contiguously, connected with pointers |
+| Resizing      | Fixed size once created        | Dynamic sizing – can grow/shrink at run-time           |
+
  
 <br>
 Types of LL:
 
-1. Singly LL            |   head -> node_1 -> ... node_n -> null        |  
-2. Circular LL          |   head -> node_1 -> ... node_n -> head        |  eg. in chess game of 4 players, after the controller is 
-                        |                                               |  done making a round from 1 to 4 it again has to go to make 
-                        |                                               |  that round ie go from 4th player to 1st, 
-                        |                                               |  for this control logic we might use circular LL
-3. Doubly LL            |   each node has reference of previous         |  eg. songs on spotify can be skipped backward & forward
-                        |   and next node, last node points to null     |  
-4. Circular Doubly LL   |   doubly LL with last node pointing to 1st    |  eg. when you tap alt+cmd, we can traverse the array of applications back & forth
+| # | Type                   | Pointer / Structure Pattern                                        | Everyday Analogy / Use-Case                                                                       |
+| - | ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| 1 | **Singly LL**          | `head → node₁ → … → nodeₙ → null`                                  | –                                                                                                 |
+| 2 | **Circular LL**        | `head → node₁ → … → nodeₙ → head`                                  | Turn-based games (e.g., 4-player chess): after the 4th player acts, control loops back to the 1st |
+| 3 | **Doubly LL**          | Each node stores `prev` and `next`; last node’s `next → null`      | Music apps like Spotify – skip tracks forward **and** backward                                    |
+| 4 | **Circular Doubly LL** | Doubly LL where last node’s `next → head` and head’s `prev → last` | Alt + Tab / Cmd + Tab application switcher: cycle through open apps in both directions            |

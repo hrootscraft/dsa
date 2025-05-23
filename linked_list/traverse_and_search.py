@@ -2,7 +2,8 @@ class Node:
     def __init__(self, data=0, next=None) -> None:
         self.data = data
         self.next = None
-    
+
+
 class LinkedList:
     def __init__(self) -> None:
         self.head = None
@@ -18,18 +19,17 @@ class LinkedList:
                 res += " -> "
             temp_node = temp_node.next
         return res
-    
-    def append(self, data):
+
+    def append(self, data) -> None:
         new_node = Node(data)
         if self.head is None:
             self.head = new_node
-            self.tail = new_node
         else:
             self.tail.next = new_node
-            self.tail = new_node
+        self.tail = new_node
         self.length += 1
 
-    def preprend(self, data):
+    def preprend(self, data) -> None:
         new_node = Node(data)
         if self.head is None:
             self.head = new_node
@@ -39,43 +39,54 @@ class LinkedList:
             self.head = new_node
         self.length += 1
 
-    def insert(self, data, idx):
+    def insert(self, data, idx) -> bool:
         new_node = Node(data)
-        if idx < 0 or idx > self.length:
+        if idx < 0 or idx >= self.length:
             return False
+
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+
         elif idx == 0:
             new_node.next = self.head
             self.head = new_node
+
         else:
             temp_node = self.head
-            for _ in range(idx-1):
+            for _ in range(idx - 1):
                 temp_node = temp_node.next
+
             new_node.next = temp_node.next
             temp_node.next = new_node
+
         self.length += 1
         return True
 
-    def traverse(self):
+    def traverse(self) -> None:
         current_node = self.head
         while current_node:
             print(current_node.data)
             current_node = current_node.next
 
-    def search(self, target):
+    def search(self, target) -> int:
         current_node = self.head
-        idx = 0
+        idx = 0  # return the index at which target is found
         while current_node:
             if current_node.data == target:
                 return idx
             current_node = current_node.next
             idx += 1
         return -1
-    
-    def get(self, idx):
-        
+
+    def get(self, idx) -> int:
+        if idx < 0 or idx >= self.length:
+            return -1
+        current_node = self.head
+        for _ in range(idx):
+            current_node = current_node.next
+        return current_node.val
+
 
 new_ll = LinkedList()
 new_ll.append(10)
@@ -83,15 +94,15 @@ new_ll.append(20)
 new_ll.append(30)
 new_ll.append(40)
 new_ll.preprend(50)
-new_ll.preprend(60) # 60-50-10-20-30-40
-new_ll.insert(70,2) 
-new_ll.insert(80,0) # edge case because even if we insert at 0 it gets inserted at 1
-new_ll.insert(90,-1)
+new_ll.preprend(60)  # 60-50-10-20-30-40
+new_ll.insert(70, 2)
+new_ll.insert(80, 0)
+new_ll.insert(90, -1)
 
 print("Head: ", new_ll.head.data)
 print("Tail: ", new_ll.tail.data)
 print("Length", new_ll.length)
-print("Current Linked List: ", str(new_ll))
+print("Current Linked List: ", new_ll)
 
 new_ll.traverse()
 print(new_ll.search(50))
