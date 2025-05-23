@@ -4,51 +4,89 @@
 # [707] Design Linked List
 #
 
+
 # @lc code=start
 class Node:
-    def __init__(self, val):
+    __slots__ = ("val", "next")  # to save memory
+
+    def __init__(self, val, next=None):
         self.val = val
-        self.next = None
+        self.next = next
+
 
 class MyLinkedList:
 
     def __init__(self):
         self.head = None
+        self.tail = None
         self.size = 0
 
+    # return the node *before* `index` (index ∈ [1, size-1])
+    def _node_before(self, index: int) -> Node | None:
+        current_node = self.head
+        for _ in range(index - 1):
+            current_node = current_node.next
+        return current_node
+
     def get(self, index: int) -> int:
-        """Retrieves the value of the node at the specified index in the linked list.
-
-        Returns the value at the given index if it exists, otherwise returns -1.
-
-        Args:
-            index (int): The position of the node to retrieve.
-
-        Returns:
-            int: The value of the node at the specified index, or -1 if the index is invalid.
-        """
-        if index < 0 or index >= self.size: return -1
+        if index < 0 or index >= self.size:
+            return -1
         current_node = self.head
         for _ in range(index):
             current_node = current_node.next
         return current_node.val
 
     def addAtHead(self, val: int) -> None:
-        self.addAtIndex(0, val)
+        new_node = Node(val, self.head)
+        self.head = new_node
+        if self.size == 0:  # first element ⇒ head == tail
+            self.tail = new_node
+        self.size += 1
 
     def addAtTail(self, val: int) -> None:
-        self.addAtIndex(self.size, val)
+        new_node = Node(val)
+        if self.size == 0:
+            self.head = self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.size += 1
 
     def addAtIndex(self, index: int, val: int) -> None:
-        if index > self.size: return # if index is greater than the length, the node will not be inserted
-        
-        current_node = self.head
-        new_node = Node(val)
+        index = max(index, 0)  # if index < 0, add at head
+        if index > self.size:
+            return  # if index > size, do nothing
 
-
+        if index == 0:
+            self.addAtHead(val)
+        elif index == self.size:
+            self.addAtTail(val)
+        else:
+            prev = self._node_before(index)
+            prev.next = Node(
+                val, prev.next
+            )  # prev.next becomes new node's next in Node.__init__(val, next)
+            # above is equivalent to:
+            # new_node = Node(val)
+            # new_node.next = prev.next
+            # prev.next = new_node
+            self.size += 1
 
     def deleteAtIndex(self, index: int) -> None:
-        
+        if index < 0 or index >= self.size:
+            return
+        # delete head
+        if index == 0:
+            self.head = self.head.next
+            if self.head is None:  # list becomes empty
+                self.tail = None
+        else:
+            prev = self._node_before(index)
+            target = prev.next  # node to remove
+            prev.next = target.next
+            if index == self.size - 1:  # deleted tail
+                self.tail = prev
+        self.size -= 1
 
 
 # Your MyLinkedList object will be instantiated and called as such:
@@ -59,4 +97,3 @@ class MyLinkedList:
 # obj.addAtIndex(index,val)
 # obj.deleteAtIndex(index)
 # @lc code=end
-
