@@ -90,6 +90,34 @@ class LinkedList:
         self.length += 1
         return True
 
+    def insert_before_val(self, target_val, new_data) -> bool:
+        # empty list → nothing to do
+        if self.head is None:
+            return False
+
+        # the node to insert *before* is the head
+        if self.head.data == target_val:
+            self.prepend(new_data)
+            return True
+
+        # walk the list keeping a pointer to the previous node
+        prev = self.head
+        curr = self.head.next
+
+        while curr and curr.data != target_val:
+            prev, curr = curr, curr.next
+
+        # target not found
+        if curr is None:
+            return False
+
+        # else, splice the new node in between prev and curr
+        new_node = Node(new_data)
+        prev.next = new_node
+        new_node.next = curr
+        self.length += 1
+        return True
+
     def deleteHead(self) -> bool:  # sourcery skip: class-extract-method
         if self.head is None:  # empty list → nothing to do
             return False
@@ -177,7 +205,7 @@ new_ll.insert(90, -1)  # does not get inserted because index out of bounds
 new_ll.deleteHead()  # removes “80”
 new_ll.deleteTail()  # removes “40”
 new_ll.deleteIndex(3)  # removes “10”
-
+new_ll.insert_before_val(20, 100)  # inserts “100” before “20”
 print("Head: ", new_ll.head.data)
 print("Tail: ", new_ll.tail.data)
 print("Length", new_ll.length)
