@@ -23,21 +23,11 @@ class DoublyLinkedList:
     def is_empty(self) -> bool:
         return self.head is None
 
-    def __iter__(self) -> int:
+    def __iter__(self):
         node = self.head
         while node:
             yield node.val
             node = node.next
-
-    def prepend(self, val) -> None:
-        """Insert at head in O(1)."""
-        new_node = DllNode(val, prev=None, next=self.head)
-        if self.head:  # non-empty list
-            self.head.prev = new_node
-        else:  # first element ⇒ also tail
-            self.tail = new_node
-        self.head = new_node
-        self.size += 1
 
     def append(self, val) -> None:
         """Insert at tail in O(1)."""
