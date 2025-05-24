@@ -1,6 +1,7 @@
 # 1. insert a node at the beginning of the LL : prepend
 # 2. insert a node at a given index in the LL : insert
 # 3. insert a node at the end of the LL : append
+# 4. insert a node before a given value in the LL : insert_before_val
 
 # 4. delete head node of the LL : deleteHead
 # 5. delete tail node of the LL : deleteTail
@@ -188,6 +189,43 @@ class LinkedList:
 
         self.length -= 1
         return value
+
+    def delete_node(self, node) -> bool:
+        """
+        Delete *node* from the list.
+        • O(1) when node is not the tail (classic copy-next trick)
+        • O(n) only when node is the tail (we must walk from head to find the prev)
+        """
+        if node is None:
+            return False
+
+        # 1. node is **not** the tail (fast path, O(1))
+        if node.next is not None:
+            node.data = node.next.data  # copy data from successor
+            node.next = (
+                node.next.next
+            )  # bypass successor (ie the successor gets deleted)
+            if node.next is None:  # we just deleted the old tail
+                self.tail = node  # update tail pointer
+            self.length -= 1
+            return True
+
+        # 2. node **is** the tail
+        if self.head is node:  # single-element list
+            self.head = self.tail = None
+            self.length = 0
+            return True
+
+        # multi-element list in which tail is node (node is self.tail but self.head is not node)
+        # in this case, walk to the node right before the tail from the head (head has to be given)
+        prev = self.head
+        while prev.next is not node:
+            prev = prev.next
+
+        prev.next = None  # detach tail
+        self.tail = prev
+        self.length -= 1
+        return True
 
 
 new_ll = LinkedList()
